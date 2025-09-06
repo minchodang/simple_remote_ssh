@@ -1,0 +1,37 @@
+{
+    "name": "@repo/ssh-cli",
+    "version": "1.0.0",
+    "description": "Simple and convenient SSH connection CLI tool",
+    "type": "module",
+    "main": "dist/index.js",
+    "bin": {
+        "ssh-easy": "dist/cli.js",
+        "se": "dist/cli.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "start": "node dist/cli.js",
+        "clean": "rm -rf dist"
+    },
+    "keywords": [
+        "ssh",
+        "cli",
+        "remote",
+        "connection"
+    ],
+    "dependencies": {
+        "commander": "^11.1.0",
+        "inquirer": "^9.2.12",
+        "chalk": "^5.3.0",
+        "ora": "^7.0.1",
+        "node-ssh": "^13.1.0"
+    },
+    "devDependencies": {
+        "@repo/typescript-config": "workspace:*",
+        "@types/inquirer": "^9.0.7",
+        "@types/node": "^20.10.0",
+        "typescript": "5.5.4"
+    }
+}
+
