@@ -114,7 +114,34 @@ export async function addCommand() {
                     .filter(tag => tag.length > 0);
             },
         },
+        {
+            type: 'confirm',
+            name: 'hasAutoCommands',
+            message: '접속 후 자동으로 실행할 명령어를 설정하시겠습니까?',
+            default: false,
+        },
+        {
+            type: 'editor',
+            name: 'autoCommandsInput',
+            message: '자동 실행할 명령어들을 입력하세요 (한 줄에 하나씩):',
+            when: answers => answers.hasAutoCommands,
+            validate: (input: string) => {
+                if (!input || !input.trim()) {
+                    return '최소 하나의 명령어를 입력해주세요.';
+                }
+                return true;
+            },
+        },
     ]);
+
+    // 자동 명령어 처리
+    let autoCommands: string[] | undefined = undefined;
+    if (answers.hasAutoCommands && answers.autoCommandsInput) {
+        autoCommands = answers.autoCommandsInput
+            .split('\n')
+            .map((cmd: string) => cmd.trim())
+            .filter((cmd: string) => cmd.length > 0);
+    }
 
     const newHost: SSHHost = {
         name: answers.name,
@@ -123,6 +150,7 @@ export async function addCommand() {
         port: answers.port,
         keyPath: answers.authMethod === 'key' ? answers.keyPath : undefined,
         usePassword: answers.authMethod === 'password',
+        autoCommands: autoCommands,
         description: answers.description,
         tags: answers.tags,
     };
@@ -144,6 +172,12 @@ export async function addCommand() {
         }
         if (newHost.tags && newHost.tags.length > 0) {
             console.log(`   ${chalk.cyan('Tags:')} ${newHost.tags.join(', ')}`);
+        }
+        if (newHost.autoCommands && newHost.autoCommands.length > 0) {
+            console.log(`   ${chalk.cyan('자동 명령어:')} ${newHost.autoCommands.length}개`);
+            newHost.autoCommands.forEach((cmd, index) => {
+                console.log(`     ${chalk.dim(`${index + 1}.`)} ${chalk.yellow(cmd)}`);
+            });
         }
         console.log();
         console.log(chalk.blue('💡 To connect:'), chalk.gray(`simple-ssh connect ${newHost.name}`));
