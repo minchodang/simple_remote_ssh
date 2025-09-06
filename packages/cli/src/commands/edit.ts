@@ -205,7 +205,7 @@ export async function editCommand(hostName?: string) {
             console.log(`   ${chalk.cyan('태그:')} ${updatedHost.tags.join(', ')}`);
         }
         console.log();
-        console.log(chalk.blue('💡 연결하려면:'), chalk.gray(`ssh-easy connect ${updatedHost.name}`));
+        console.log(chalk.blue('💡 연결하려면:'), chalk.gray(`simple-ssh connect ${updatedHost.name}`));
     } catch (error) {
         console.log(chalk.red('❌ 호스트 수정 중 오류가 발생했습니다:'), error);
     }

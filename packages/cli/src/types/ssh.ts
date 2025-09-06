@@ -1,5 +1,5 @@
 export interface SSHHost {
-omㅓ    name: string;
+    name: string;
     host: string;
     user: string;
     port: number;

@@ -11,9 +11,9 @@ import { editCommand } from './commands/edit.js';
 const program = new Command();
 
 program
-  .name('ssh-easy')
+  .name('simple-ssh')
   .description('🚀 Simple and convenient SSH connection CLI tool')
-  .version('1.0.0');
+  .version('0.1.0');
 
 // 연결 명령어
 program
@@ -55,8 +55,8 @@ program
 // 기본 동작 (호스트 선택 후 연결)
 program
   .action(async () => {
-    console.log(chalk.blue('🚀 SSH Easy - 간편한 SSH 연결 도구'));
-    console.log(chalk.gray('사용법: ssh-easy <command> 또는 se <command>'));
+    console.log(chalk.blue('🚀 Simple SSH - 간편한 SSH 연결 도구'));
+    console.log(chalk.gray('사용법: simple-ssh <command>'));
     console.log();
     
     // 호스트가 없으면 대화형 연결

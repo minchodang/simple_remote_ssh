@@ -1,5 +1,5 @@
 {
-    "name": "my-turbo-repo-templates",
+    "name": "simple-remote-ssh-workspace",
     "private": true,
     "scripts": {
         "build": "turbo build",

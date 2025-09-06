@@ -5,8 +5,8 @@ export async function listCommand() {
     const config = await loadConfig();
 
     if (config.hosts.length === 0) {
-        console.log(chalk.yellow('⚠️  저장된 호스트가 없습니다.'));
-        console.log(chalk.blue('💡 호스트를 추가하려면: ssh-easy add'));
+  console.log(chalk.yellow('⚠️  저장된 호스트가 없습니다.'));
+  console.log(chalk.blue('💡 호스트를 추가하려면: simple-ssh add'));
         return;
     }
 
@@ -33,8 +33,8 @@ export async function listCommand() {
     console.log();
     console.log(chalk.dim(`총 ${config.hosts.length}개의 호스트가 저장되어 있습니다.`));
     console.log();
-    console.log(chalk.blue('💡 사용법:'));
-    console.log(chalk.dim('  연결: ssh-easy connect <호스트명> 또는 ssh-easy c <호스트명>'));
-    console.log(chalk.dim('  편집: ssh-easy edit <호스트명> 또는 ssh-easy e <호스트명>'));
-    console.log(chalk.dim('  삭제: ssh-easy remove <호스트명> 또는 ssh-easy rm <호스트명>'));
+  console.log(chalk.blue('💡 사용법:'));
+  console.log(chalk.dim('  연결: simple-ssh connect <호스트명> 또는 simple-ssh c <호스트명>'));
+  console.log(chalk.dim('  편집: simple-ssh edit <호스트명> 또는 simple-ssh e <호스트명>'));
+  console.log(chalk.dim('  삭제: simple-ssh remove <호스트명> 또는 simple-ssh rm <호스트명>'));
 }

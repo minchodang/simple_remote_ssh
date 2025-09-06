@@ -146,7 +146,7 @@ export async function addCommand() {
             console.log(`   ${chalk.cyan('태그:')} ${newHost.tags.join(', ')}`);
         }
         console.log();
-        console.log(chalk.blue('💡 연결하려면:'), chalk.gray(`ssh-easy connect ${newHost.name}`));
+        console.log(chalk.blue('💡 연결하려면:'), chalk.gray(`simple-ssh connect ${newHost.name}`));
     } catch (error) {
         console.log(chalk.red('❌ 호스트 추가 중 오류가 발생했습니다:'), error);
     }

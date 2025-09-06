@@ -20,8 +20,8 @@ export async function connectCommand(hostName?: string, options: ConnectionOptio
     } else {
         // 호스트 선택
         if (config.hosts.length === 0) {
-            console.log(chalk.yellow('⚠️  저장된 호스트가 없습니다.'));
-            console.log(chalk.blue('💡 먼저 호스트를 추가해보세요: ssh-easy add'));
+      console.log(chalk.yellow('⚠️  저장된 호스트가 없습니다.'));
+      console.log(chalk.blue('💡 먼저 호스트를 추가해보세요: simple-ssh add'));
             return;
         }
 
