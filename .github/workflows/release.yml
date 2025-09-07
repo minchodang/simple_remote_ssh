@@ -66,6 +66,9 @@ jobs:
                   ls -la ~/.npmrc
                   echo "Testing npm authentication..."
                   npm whoami || echo "npm whoami failed"
+                  
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
 
             - name: Create Release Pull Request or Publish to npm
               id: changesets
