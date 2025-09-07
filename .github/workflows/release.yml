@@ -67,7 +67,6 @@ jobs:
                   echo "Testing npm authentication..."
                   npm whoami || echo "npm whoami failed"
 
-
             - name: Create Release Pull Request or Publish to npm
               id: changesets
               uses: changesets/action@v1
