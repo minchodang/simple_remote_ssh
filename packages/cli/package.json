@@ -2,6 +2,16 @@
     "name": "simple-remote-ssh",
     "version": "0.1.1",
     "description": "Simple and convenient SSH connection CLI tool",
+    "author": "minchodang <minsu910725@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kangminsu/simple_remote_ssh.git",
+        "directory": "packages/cli"
+    },
+    "homepage": "https://github.com/kangminsu/simple_remote_ssh#readme",
+    "bugs": {
+        "url": "https://github.com/kangminsu/simple_remote_ssh/issues"
+    },
     "type": "module",
     "main": "dist/index.js",
     "bin": {
@@ -44,6 +54,6 @@
         "dist",
         "README.md",
         "CHANGELOG.md",
-        "../../LICENSE"
+        "LICENSE"
     ]
 }
