@@ -1,85 +1,113 @@
-# Turborepo starter
+# Simple Remote SSH
 
-This is an official starter Turborepo.
+🚀 **A simple and convenient SSH connection management tool**
 
-## Using this example
+Easily manage and connect to your SSH hosts with an intuitive CLI interface. Store host configurations, manage authentication methods, and execute commands automatically upon connection.
 
-Run the following command:
+## ✨ Features
 
-```sh
-npx create-turbo@latest
+-   🔗 **Easy Connection**: Connect to saved hosts with a single command
+-   📋 **Host Management**: Add, edit, and delete SSH hosts interactively
+-   🎯 **Interactive Interface**: Intuitive host selection with prompts
+-   🔑 **Multiple Auth Methods**: SSH keys, password, or default SSH settings
+-   🤖 **Auto Commands**: Execute commands automatically on connection
+-   🏷️ **Tag System**: Organize hosts with custom tags
+-   ⚡ **Quick Access**: Short and memorable commands
+
+## 📦 Installation
+
+```bash
+# Install globally from npm
+npm install -g simple-remote-ssh
+
+# Or using yarn
+yarn global add simple-remote-ssh
+
+# Or using pnpm
+pnpm add -g simple-remote-ssh
 ```
 
-## What's inside?
+## 🚀 Quick Start
 
-This Turborepo includes the following packages/apps:
+```bash
+# Add your first SSH host
+simple-ssh add
 
-### Apps and Packages
+# List all saved hosts
+simple-ssh list
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+# Connect to a host (interactive selection)
+simple-ssh
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
+# Connect to specific host
+simple-ssh connect my-server
 ```
-cd my-turborepo
+
+## 📖 Documentation
+
+For detailed usage instructions, examples, and API reference, see the [CLI package documentation](./packages/cli/README.md).
+
+## 🏗️ Project Structure
+
+This is a monorepo built with [Turborepo](https://turbo.build/) containing:
+
+### Packages
+
+-   **`packages/cli`** - The main CLI tool for SSH connection management
+-   **`packages/ui`** - Shared UI components (for future extensions)
+-   **`packages/eslint-config`** - Shared ESLint configurations
+-   **`packages/typescript-config`** - Shared TypeScript configurations
+
+### Apps
+
+-   **`apps/docs`** - Documentation website (planned)
+-   **`apps/web`** - Web interface (planned)
+
+## 🛠️ Development
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build all packages
 pnpm build
-```
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
+# Develop with watch mode
 pnpm dev
+
+# Run tests
+pnpm test
+
+# Lint code
+pnpm lint
 ```
 
-### Remote Caching
+## 🤝 Contributing
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## 📄 License
 
-```
-cd my-turborepo
-npx turbo login
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 👤 Author
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+**minchodang** <minsu910725@gmail.com>
 
-```
-npx turbo link
-```
+-   GitHub: [@minchodang](https://github.com/minchodang)
 
-## Useful Links
+## 🔗 Links
 
-Learn more about the power of Turborepo:
+-   [npm package](https://www.npmjs.com/package/simple-remote-ssh)
+-   [GitHub Repository](https://github.com/kangminsu/simple_remote_ssh)
+-   [Issue Tracker](https://github.com/kangminsu/simple_remote_ssh/issues)
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
-# my-turbo-repo-template
+---
+
+⭐ **Star this repository if you find it helpful!**
