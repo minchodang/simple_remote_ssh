@@ -1,0 +1,18 @@
+# Global code owners
+* @minchodang
+
+# CLI package specific
+/packages/cli/ @minchodang
+
+# GitHub Actions and CI/CD
+/.github/ @minchodang
+
+# Documentation
+/README.md @minchodang
+/packages/cli/README.md @minchodang
+
+# Package configuration
+/package.json @minchodang
+/packages/cli/package.json @minchodang
+/pnpm-workspace.yaml @minchodang
+/turbo.json @minchodang
