@@ -2,45 +2,45 @@
 'simple-remote-ssh': major
 ---
 
-# 🎉 Simple Remote SSH v1.0.0 - 첫 번째 메이저 릴리즈
+# 🎉 Simple Remote SSH v1.0.0 - First Major Release
 
-## ✨ 주요 기능
+## ✨ Key Features
 
-### SSH 호스트 관리
+### SSH Host Management
 
--   **호스트 추가**: `simple-ssh add` - 대화형 호스트 정보 입력
--   **호스트 목록**: `simple-ssh list` - 저장된 호스트 목록 보기
--   **호스트 편집**: `simple-ssh edit <호스트명>` - 호스트 정보 수정
--   **호스트 삭제**: `simple-ssh remove <호스트명>` - 호스트 제거
+-   **Add Host**: `simple-ssh add` - Interactive host information input
+-   **List Hosts**: `simple-ssh list` - View saved host list
+-   **Edit Host**: `simple-ssh edit <hostname>` - Modify host information
+-   **Remove Host**: `simple-ssh remove <hostname>` - Delete host
 
-### SSH 연결
+### SSH Connection
 
--   **대화형 연결**: `simple-ssh` - 호스트 선택 후 연결
--   **직접 연결**: `simple-ssh connect <호스트명>` - 특정 호스트에 바로 연결
--   **연결 옵션**: 사용자명, 포트 오버라이드 지원
+-   **Interactive Connection**: `simple-ssh` - Select and connect to host
+-   **Direct Connection**: `simple-ssh connect <hostname>` - Connect directly to specific host
+-   **Connection Options**: Username and port override support
 
-### 인증 방식
+### Authentication Methods
 
--   **SSH 키 파일**: 보안성이 높은 키 기반 인증
--   **비밀번호**: 연결 시점 대화형 입력
--   **기본 SSH 설정**: 시스템 기본 설정 활용
+-   **SSH Key File**: Secure key-based authentication
+-   **Password**: Interactive password input on connection
+-   **Default SSH Settings**: Use system default SSH configuration
 
-### 부가 기능
+### Additional Features
 
--   **태그 시스템**: 호스트 분류 및 관리
--   **설명 필드**: 호스트별 메모
--   **컬러풀한 UI**: 직관적인 사용자 인터페이스
+-   **Tag System**: Host categorization and management
+-   **Description Field**: Per-host notes
+-   **Colorful UI**: Intuitive user interface
 
-## 🚀 설치 및 사용법
+## 🚀 Installation & Usage
 
 ```bash
-# 전역 설치
+# Global installation
 npm install -g simple-remote-ssh
 
-# 사용법
+# Usage
 simple-ssh --help
 ```
 
-## 💾 설정 파일
+## 💾 Configuration File
 
-호스트 정보는 `~/.ssh-easy/config.json`에 안전하게 저장됩니다.
+Host information is securely stored in `~/.ssh-easy/config.json`.
