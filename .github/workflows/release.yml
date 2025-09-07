@@ -48,7 +48,7 @@ jobs:
               id: changesets
               uses: changesets/action@v1
               with:
-                  # 이 명령어는 changeset이 있으면 PR을 생성하고, 없으면 npm에 배포합니다
+                  # This command creates a PR if changesets exist, otherwise publishes to npm
                   publish: pnpm release
                   title: 'chore: release packages'
                   commit: 'chore: release packages'
@@ -65,12 +65,12 @@ jobs:
                   tag_name: v${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
                   release_name: v${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
                   body: |
-                      ## 🎉 새로운 릴리즈가 배포되었습니다!
+                      ## 🎉 New release deployed!
 
-                      ### 📦 배포된 패키지
+                      ### 📦 Published packages
                       ${{ steps.changesets.outputs.publishedPackages }}
 
-                      ### 🚀 설치 방법
+                      ### 🚀 Installation
                       ```bash
                       npm install -g simple-remote-ssh
                       ```
