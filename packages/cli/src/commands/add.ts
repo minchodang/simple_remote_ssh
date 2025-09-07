@@ -5,7 +5,7 @@ import { addHost, loadConfig } from '../utils/config.js';
 import type { SSHHost } from '../types/ssh.js';
 
 export async function addCommand() {
-    console.log(chalk.blue('➕ 새로운 SSH 호스트 추가'));
+    console.log(chalk.blue('➕ Add new SSH host'));
     console.log();
 
     const config = await loadConfig();

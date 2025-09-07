@@ -1,0 +1,78 @@
+name: Release
+
+on:
+    push:
+        branches:
+            - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+    release:
+        name: Release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js 18
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+
+            - name: Get pnpm store directory
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+            - name: Setup pnpm cache
+              uses: actions/cache@v3
+              with:
+                  path: ${{ env.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Build packages
+              run: pnpm build
+
+            - name: Create Release Pull Request or Publish to npm
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  # 이 명령어는 changeset이 있으면 PR을 생성하고, 없으면 npm에 배포합니다
+                  publish: pnpm release
+                  title: 'chore: release packages'
+                  commit: 'chore: release packages'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+            - name: Create GitHub Release
+              if: steps.changesets.outputs.published == 'true'
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag_name: v${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+                  release_name: v${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }}
+                  body: |
+                      ## 🎉 새로운 릴리즈가 배포되었습니다!
+
+                      ### 📦 배포된 패키지
+                      ${{ steps.changesets.outputs.publishedPackages }}
+
+                      ### 🚀 설치 방법
+                      ```bash
+                      npm install -g simple-remote-ssh
+                      ```
+                  draft: false
+                  prerelease: false
