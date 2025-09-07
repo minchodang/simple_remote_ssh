@@ -26,6 +26,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 18
+                  registry-url: 'https://registry.npmjs.org'
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v2
@@ -52,7 +53,19 @@ jobs:
               run: pnpm build
 
             - name: Setup NPM authentication
-              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+              run: |
+                  echo "Checking NPM_TOKEN..."
+                  if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+                    echo "❌ NPM_TOKEN is empty or not set!"
+                    exit 1
+                  else
+                    echo "✅ NPM_TOKEN is set"
+                  fi
+                  echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+                  echo "Created ~/.npmrc file"
+                  ls -la ~/.npmrc
+                  echo "Testing npm authentication..."
+                  npm whoami || echo "npm whoami failed"
 
             - name: Create Release Pull Request or Publish to npm
               id: changesets
@@ -63,9 +76,11 @@ jobs:
                   title: 'chore: release packages'
                   commit: 'chore: release packages'
                   createGithubReleases: true
+                  setupGitUser: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             - name: Create GitHub Release
               if: steps.changesets.outputs.published == 'true'
