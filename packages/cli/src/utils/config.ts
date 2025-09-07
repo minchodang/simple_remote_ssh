@@ -4,8 +4,18 @@ import { join } from 'path';
 import { homedir } from 'os';
 import type { SSHConfig, SSHHost } from '../types/ssh.js';
 
-const CONFIG_DIR = join(homedir(), '.ssh-easy');
-const CONFIG_FILE = join(CONFIG_DIR, 'config.json');
+// 테스트 환경에서 HOME 환경변수를 우선 사용
+function getHomeDir(): string {
+    return process.env.HOME || process.env.USERPROFILE || homedir();
+}
+
+function getConfigDir(): string {
+    return join(getHomeDir(), '.ssh-easy');
+}
+
+function getConfigFile(): string {
+    return join(getConfigDir(), 'config.json');
+}
 
 const DEFAULT_CONFIG: SSHConfig = {
     hosts: [],
@@ -14,21 +24,23 @@ const DEFAULT_CONFIG: SSHConfig = {
 };
 
 export async function ensureConfigDir(): Promise<void> {
-    if (!existsSync(CONFIG_DIR)) {
-        await mkdir(CONFIG_DIR, { recursive: true });
+    const configDir = getConfigDir();
+    if (!existsSync(configDir)) {
+        await mkdir(configDir, { recursive: true });
     }
 }
 
 export async function loadConfig(): Promise<SSHConfig> {
     await ensureConfigDir();
 
-    if (!existsSync(CONFIG_FILE)) {
+    const configFile = getConfigFile();
+    if (!existsSync(configFile)) {
         await saveConfig(DEFAULT_CONFIG);
         return DEFAULT_CONFIG;
     }
 
     try {
-        const content = await readFile(CONFIG_FILE, 'utf-8');
+        const content = await readFile(configFile, 'utf-8');
         const config = JSON.parse(content) as SSHConfig;
 
         // 기본값 병합
@@ -47,7 +59,7 @@ export async function saveConfig(config: SSHConfig): Promise<void> {
     await ensureConfigDir();
 
     try {
-        await writeFile(CONFIG_FILE, JSON.stringify(config, null, 2), 'utf-8');
+        await writeFile(getConfigFile(), JSON.stringify(config, null, 2), 'utf-8');
     } catch (error) {
         console.error('설정 파일을 저장하는 중 오류가 발생했습니다:', error);
         throw error;
@@ -86,4 +98,3 @@ export async function getHost(name: string): Promise<SSHHost | undefined> {
     const config = await loadConfig();
     return config.hosts.find(h => h.name === name);
 }
-
