@@ -1,123 +1,133 @@
-# SSH Easy - 간편한 SSH 연결 도구
+# Simple Remote SSH - Easy SSH Connection Tool
 
-🚀 복잡한 SSH 연결을 간단하게! 호스트를 저장하고 쉽게 관리할 수 있는 CLI 도구입니다.
+🚀 Simplify complex SSH connections! A CLI tool for storing and easily managing SSH hosts.
 
-## 특징
+## Features
 
--   🔗 **간편한 연결**: 저장된 호스트에 한 번의 명령으로 연결
--   📋 **호스트 관리**: SSH 호스트 추가, 편집, 삭제
--   🎯 **대화형 인터페이스**: 직관적인 호스트 선택
--   🏷️ **태그 시스템**: 호스트를 태그로 분류
--   🔑 **키 파일 지원**: SSH 키 파일 자동 관리
--   ⚡ **빠른 접근**: `ssh-easy` 또는 `se` 짧은 명령어
+-   🔗 **Easy Connection**: Connect to saved hosts with a single command
+-   📋 **Host Management**: Add, edit, and delete SSH hosts
+-   🎯 **Interactive Interface**: Intuitive host selection
+-   🏷️ **Tag System**: Organize hosts with tags
+-   🔑 **SSH Key Support**: Automatic SSH key file management
+-   ⚡ **Quick Access**: Short commands with `simple-ssh`
+-   🤖 **Auto Commands**: Execute commands automatically on connection
 
-## 설치
+## Installation
 
 ```bash
-# 개발 모드에서 설치 (현재 디렉토리에서)
+# Install globally from npm
+npm install -g simple-remote-ssh
+
+# Or install for development (from current directory)
 cd packages/cli
 npm link
 ```
 
-## 사용법
+## Usage
 
-### 기본 명령어
-
-```bash
-# 도움말 보기
-ssh-easy --help
-se --help
-
-# 호스트 목록 보기
-ssh-easy list
-se ls
-
-# 새 호스트 추가
-ssh-easy add
-se a
-
-# 호스트에 연결 (대화형 선택)
-ssh-easy
-se
-
-# 특정 호스트에 연결
-ssh-easy connect my-server
-se c my-server
-
-# 호스트 편집
-ssh-easy edit my-server
-se e my-server
-
-# 호스트 삭제
-ssh-easy remove my-server
-se rm my-server
-```
-
-### 연결 옵션
+### Basic Commands
 
 ```bash
-# 사용자명 지정하여 연결
-ssh-easy connect my-server --user root
-se c my-server -u root
+# Show help
+simple-ssh --help
 
-# 포트 지정하여 연결
-ssh-easy connect my-server --port 2222
-se c my-server -p 2222
+# List saved hosts
+simple-ssh list
+simple-ssh ls
 
-# 사용자명과 포트 모두 지정
-ssh-easy connect my-server -u admin -p 2222
+# Add new host
+simple-ssh add
+simple-ssh a
+
+# Connect to host (interactive selection)
+simple-ssh
+simple-ssh connect
+
+# Connect to specific host
+simple-ssh connect my-server
+simple-ssh c my-server
+
+# Edit host
+simple-ssh edit my-server
+simple-ssh e my-server
+
+# Remove host
+simple-ssh remove my-server
+simple-ssh rm my-server
 ```
 
-## 호스트 추가 예시
+### Connection Options
 
 ```bash
-$ ssh-easy add
+# Connect with specific user
+simple-ssh connect my-server --user root
+simple-ssh c my-server -u root
 
-➕ 새로운 SSH 호스트 추가
+# Connect with specific port
+simple-ssh connect my-server --port 2222
+simple-ssh c my-server -p 2222
 
-? 호스트 이름 (별칭): my-server
-? 호스트 주소 (IP 또는 도메인): 192.168.1.100
-? 사용자명: ubuntu
-? 포트 번호: 22
-? SSH 키 파일 경로 (선택사항): ~/.ssh/id_rsa
-? 설명 (선택사항): 개발 서버
-? 태그 (쉼표로 구분, 선택사항): dev, ubuntu
-
-✅ 호스트가 성공적으로 추가되었습니다!
-
-📋 추가된 호스트 정보:
-   이름: my-server
-   주소: ubuntu@192.168.1.100:22
-   키 파일: ~/.ssh/id_rsa
-   설명: 개발 서버
-   태그: dev, ubuntu
-
-💡 연결하려면: ssh-easy connect my-server
+# Connect with both user and port
+simple-ssh connect my-server -u admin -p 2222
 ```
 
-## 호스트 목록 예시
+## Adding Host Example
 
 ```bash
-$ ssh-easy list
+$ simple-ssh add
 
-📋 저장된 SSH 호스트 목록:
+➕ Add New SSH Host
 
-1. my-server ubuntu@192.168.1.100:22 - 개발 서버 [dev, ubuntu]
-   🔑 Key: ~/.ssh/id_rsa
-2. prod-server root@prod.example.com:22 - 운영 서버 [prod]
-3. test-db admin@test-db.local:3306 - 테스트 DB [test, database]
+? Host name (alias): my-server
+? Host address (IP or domain): 192.168.1.100
+? Username: ubuntu
+? Port number: 22
+? Authentication method: SSH Key
+? SSH key file path: ~/.ssh/id_rsa
+? Description (optional): Development server
+? Tags (comma separated, optional): dev, ubuntu
+? Do you want to add auto-commands? Yes
+? Enter commands to run on connect: cd /var/log && powershell -Command "Get-Content -Path admin.log -Tail 10 -Wait"
 
-총 3개의 호스트가 저장되어 있습니다.
+✅ Host added successfully!
 
-💡 사용법:
-  연결: ssh-easy connect <호스트명> 또는 ssh-easy c <호스트명>
-  편집: ssh-easy edit <호스트명> 또는 ssh-easy e <호스트명>
-  삭제: ssh-easy remove <호스트명> 또는 ssh-easy rm <호스트명>
+📋 Host Information:
+   Name: my-server
+   Address: ubuntu@192.168.1.100:22
+   Auth: SSH Key (~/.ssh/id_rsa)
+   Description: Development server
+   Tags: dev, ubuntu
+   Auto Commands: 1 command configured
+
+💡 To connect: simple-ssh connect my-server
 ```
 
-## 설정 파일
+## Host List Example
 
-호스트 정보는 `~/.ssh-easy/config.json`에 저장됩니다.
+```bash
+$ simple-ssh list
+
+📋 Saved SSH Hosts:
+
+1. my-server ubuntu@192.168.1.100:22 - Development server [dev, ubuntu]
+   🔑 Auth: SSH Key (~/.ssh/id_rsa)
+   🤖 Auto Commands: 1 configured
+2. prod-server root@prod.example.com:22 - Production server [prod]
+   🔒 Auth: Password
+3. test-db admin@test-db.local:3306 - Test database [test, database]
+   ⚙️  Auth: Default SSH settings
+
+Total: 3 hosts saved.
+
+💡 Usage:
+  Connect: simple-ssh connect <hostname> or simple-ssh c <hostname>
+  Edit: simple-ssh edit <hostname> or simple-ssh e <hostname>
+  Remove: simple-ssh remove <hostname> or simple-ssh rm <hostname>
+```
+
+## Configuration File
+
+Host information is stored in `~/.simple-ssh/config.json`.
 
 ```json
 {
@@ -128,8 +138,9 @@ $ ssh-easy list
             "user": "ubuntu",
             "port": 22,
             "keyPath": "~/.ssh/id_rsa",
-            "description": "개발 서버",
-            "tags": ["dev", "ubuntu"]
+            "description": "Development server",
+            "tags": ["dev", "ubuntu"],
+            "autoCommands": ["cd /var/log", "powershell -Command \"Get-Content -Path admin.log -Tail 10 -Wait\""]
         }
     ],
     "defaultUser": "ubuntu",
@@ -137,22 +148,25 @@ $ ssh-easy list
 }
 ```
 
-## 개발
+## Development
 
 ```bash
-# 의존성 설치
+# Install dependencies
 pnpm install
 
-# 개발 모드 (watch)
+# Development mode (watch)
 pnpm dev
 
-# 빌드
+# Build
 pnpm build
 
-# 전역 링크
+# Link globally
 npm link
+
+# Run tests
+pnpm test
 ```
 
-## 라이선스
+## License
 
 MIT
