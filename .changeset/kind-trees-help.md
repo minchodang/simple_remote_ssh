@@ -1,8 +1,8 @@
 ---
-'simple-remote-ssh': major
+'simple-remote-ssh': minor
 ---
 
-# 🎉 Simple Remote SSH v1.0.0 - First Major Release
+# 🎉 Simple Remote SSH v0.1.0 - Initial Release
 
 ## ✨ Key Features
 

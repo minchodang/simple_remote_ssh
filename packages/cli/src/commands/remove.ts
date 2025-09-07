@@ -6,19 +6,19 @@ export async function removeCommand(hostName?: string) {
     const config = await loadConfig();
 
     if (config.hosts.length === 0) {
-        console.log(chalk.yellow('⚠️  저장된 호스트가 없습니다.'));
+        console.log(chalk.yellow('⚠️  No saved hosts found.'));
         return;
     }
 
     let targetHostName = hostName;
 
     if (!targetHostName) {
-        // 호스트 선택
+        // Host selection
         const { selectedHost } = await inquirer.prompt([
             {
                 type: 'list',
                 name: 'selectedHost',
-                message: '삭제할 호스트를 선택하세요:',
+                message: 'Select host to remove:',
                 choices: [
                     ...config.hosts.map(host => ({
                         name: `${chalk.cyan(host.name)} - ${host.user}@${host.host}:${host.port}`,
@@ -26,7 +26,7 @@ export async function removeCommand(hostName?: string) {
                     })),
                     new inquirer.Separator(),
                     {
-                        name: chalk.gray('취소'),
+                        name: chalk.gray('Cancel'),
                         value: null,
                     },
                 ],
@@ -34,7 +34,7 @@ export async function removeCommand(hostName?: string) {
         ]);
 
         if (!selectedHost) {
-            console.log(chalk.blue('취소되었습니다.'));
+            console.log(chalk.blue('Cancelled.'));
             return;
         }
 
@@ -42,23 +42,23 @@ export async function removeCommand(hostName?: string) {
     }
 
     if (!targetHostName) {
-        console.log(chalk.red('❌ 호스트 이름이 지정되지 않았습니다.'));
+        console.log(chalk.red('❌ Host name not specified.'));
         return;
     }
 
     const targetHost = await getHost(targetHostName);
     if (!targetHost) {
-        console.log(chalk.red(`❌ 호스트 '${targetHostName}'을 찾을 수 없습니다.`));
+        console.log(chalk.red(`❌ Host '${targetHostName}' not found.`));
         return;
     }
 
-    // 삭제 확인
+    // Deletion confirmation
     console.log();
-    console.log(chalk.yellow('⚠️  다음 호스트를 삭제하시겠습니까?'));
-    console.log(`   ${chalk.cyan('이름:')} ${targetHost.name}`);
-    console.log(`   ${chalk.cyan('주소:')} ${targetHost.user}@${targetHost.host}:${targetHost.port}`);
+    console.log(chalk.yellow('⚠️  Are you sure you want to delete this host?'));
+    console.log(`   ${chalk.cyan('Name:')} ${targetHost.name}`);
+    console.log(`   ${chalk.cyan('Address:')} ${targetHost.user}@${targetHost.host}:${targetHost.port}`);
     if (targetHost.description) {
-        console.log(`   ${chalk.cyan('설명:')} ${targetHost.description}`);
+        console.log(`   ${chalk.cyan('Description:')} ${targetHost.description}`);
     }
     console.log();
 

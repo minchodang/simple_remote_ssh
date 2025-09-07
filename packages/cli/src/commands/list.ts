@@ -5,12 +5,12 @@ export async function listCommand() {
     const config = await loadConfig();
 
     if (config.hosts.length === 0) {
-  console.log(chalk.yellow('⚠️  저장된 호스트가 없습니다.'));
-  console.log(chalk.blue('💡 호스트를 추가하려면: simple-ssh add'));
+        console.log(chalk.yellow('⚠️  No saved hosts found.'));
+        console.log(chalk.blue('💡 To add a host: simple-ssh add'));
         return;
     }
 
-    console.log(chalk.blue('📋 저장된 SSH 호스트 목록:'));
+    console.log(chalk.blue('📋 Saved SSH hosts:'));
     console.log();
 
     config.hosts.forEach((host, index) => {
@@ -24,17 +24,17 @@ export async function listCommand() {
         if (host.keyPath) {
             console.log(`   ${chalk.dim('🔑 Key:')} ${chalk.yellow(host.keyPath)}`);
         } else if (host.usePassword) {
-            console.log(`   ${chalk.dim('🔒 Auth:')} ${chalk.cyan('비밀번호')}`);
+            console.log(`   ${chalk.dim('🔒 Auth:')} ${chalk.cyan('Password')}`);
         } else {
-            console.log(`   ${chalk.dim('🔧 Auth:')} ${chalk.gray('기본 SSH 설정')}`);
+            console.log(`   ${chalk.dim('🔧 Auth:')} ${chalk.gray('Default SSH settings')}`);
         }
     });
 
     console.log();
-    console.log(chalk.dim(`총 ${config.hosts.length}개의 호스트가 저장되어 있습니다.`));
+    console.log(chalk.dim(`Total ${config.hosts.length} host(s) saved.`));
     console.log();
-  console.log(chalk.blue('💡 사용법:'));
-  console.log(chalk.dim('  연결: simple-ssh connect <호스트명> 또는 simple-ssh c <호스트명>'));
-  console.log(chalk.dim('  편집: simple-ssh edit <호스트명> 또는 simple-ssh e <호스트명>'));
-  console.log(chalk.dim('  삭제: simple-ssh remove <호스트명> 또는 simple-ssh rm <호스트명>'));
+    console.log(chalk.blue('💡 Usage:'));
+    console.log(chalk.dim('  Connect: simple-ssh connect <hostname> or simple-ssh c <hostname>'));
+    console.log(chalk.dim('  Edit: simple-ssh edit <hostname> or simple-ssh e <hostname>'));
+    console.log(chalk.dim('  Remove: simple-ssh remove <hostname> or simple-ssh rm <hostname>'));
 }
