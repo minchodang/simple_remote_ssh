@@ -7,6 +7,11 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+    contents: write
+    pull-requests: write
+    packages: write
+
 jobs:
     release:
         name: Release
@@ -52,6 +57,7 @@ jobs:
                   publish: pnpm release
                   title: 'chore: release packages'
                   commit: 'chore: release packages'
+                  createGithubReleases: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
