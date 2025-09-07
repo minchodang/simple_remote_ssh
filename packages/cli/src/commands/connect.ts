@@ -20,8 +20,8 @@ export async function connectCommand(hostName?: string, options: ConnectionOptio
     } else {
         // Host selection
         if (config.hosts.length === 0) {
-      console.log(chalk.yellow('⚠️  No saved hosts found.'));
-      console.log(chalk.blue('💡 Add a host first: simple-ssh add'));
+            console.log(chalk.yellow('⚠️  No saved hosts found.'));
+            console.log(chalk.blue('💡 Add a host first: simple-ssh add'));
             return;
         }
 
@@ -29,7 +29,7 @@ export async function connectCommand(hostName?: string, options: ConnectionOptio
             {
                 type: 'list',
                 name: 'selectedHost',
-                message: 'Select a host to connect:'
+                message: 'Select a host to connect:',
                 choices: config.hosts.map(host => ({
                     name: `${chalk.cyan(host.name)} - ${host.user}@${host.host}:${host.port}${host.description ? ` (${host.description})` : ''}`,
                     value: host.name,
