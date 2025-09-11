@@ -4,5 +4,5 @@
             "mode": "auto"
         }
     ],
-    "conventionalCommits.scopes": ["Setup"]
+    "conventionalCommits.scopes": ["Setup", "Release"]
 }

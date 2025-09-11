@@ -1,5 +1,11 @@
 # simple-remote-ssh
 
+## 0.1.2
+
+### Patch Changes
+
+- github url update and config fix
+
 ## 0.1.1
 
 ### Patch Changes
