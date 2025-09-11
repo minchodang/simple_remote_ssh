@@ -5,12 +5,12 @@
     "author": "minchodang <minsu910725@gmail.com>",
     "repository": {
         "type": "git",
-        "url": "https://github.com/kangminsu/simple_remote_ssh.git",
+        "url": "https://github.com/minchodang/simple_remote_ssh.git",
         "directory": "packages/cli"
     },
-    "homepage": "https://github.com/kangminsu/simple_remote_ssh#readme",
+    "homepage": "https://github.com/minchodang/simple_remote_ssh#readme",
     "bugs": {
-        "url": "https://github.com/kangminsu/simple_remote_ssh/issues"
+        "url": "https://github.com/minchodang/simple_remote_ssh/issues"
     },
     "type": "module",
     "main": "dist/index.js",
