@@ -1,6 +1,6 @@
 {
     "name": "simple-remote-ssh",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "Simple and convenient SSH connection CLI tool",
     "author": "minchodang <minsu910725@gmail.com>",
     "repository": {
