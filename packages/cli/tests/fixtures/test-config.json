@@ -1,0 +1,24 @@
+{
+    "hosts": [
+        {
+            "name": "test-server",
+            "host": "192.168.1.100",
+            "user": "testuser",
+            "port": 22,
+            "keyPath": "/home/user/.ssh/id_rsa",
+            "description": "Test server for development",
+            "tags": ["development", "testing"]
+        },
+        {
+            "name": "prod-server",
+            "host": "prod.example.com",
+            "user": "admin",
+            "port": 2222,
+            "usePassword": true,
+            "description": "Production server",
+            "tags": ["production"]
+        }
+    ],
+    "defaultUser": "testuser",
+    "defaultPort": 22
+}
