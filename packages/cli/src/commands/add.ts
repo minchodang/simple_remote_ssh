@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { existsSync } from 'fs';
 import { addHost, loadConfig } from '../utils/config.js';
+import { displayHostInfo } from '../utils/display.js';
 import type { SSHHost } from '../types/ssh.js';
 
 export async function addCommand() {
@@ -114,7 +115,34 @@ export async function addCommand() {
                     .filter(tag => tag.length > 0);
             },
         },
+        {
+            type: 'confirm',
+            name: 'hasAutoCommands',
+            message: 'Do you want to configure auto-run commands after connection?',
+            default: false,
+        },
+        {
+            type: 'editor',
+            name: 'autoCommandsInput',
+            message: 'Enter commands to run automatically (one per line):',
+            when: answers => answers.hasAutoCommands,
+            validate: (input: string) => {
+                if (!input || !input.trim()) {
+                    return 'Please enter at least one command.';
+                }
+                return true;
+            },
+        },
     ]);
+
+    // Process auto commands
+    let autoCommands: string[] | undefined = undefined;
+    if (answers.hasAutoCommands && answers.autoCommandsInput) {
+        autoCommands = answers.autoCommandsInput
+            .split('\n')
+            .map((cmd: string) => cmd.trim())
+            .filter((cmd: string) => cmd.length > 0);
+    }
 
     const newHost: SSHHost = {
         name: answers.name,
@@ -123,6 +151,7 @@ export async function addCommand() {
         port: answers.port,
         keyPath: answers.authMethod === 'key' ? answers.keyPath : undefined,
         usePassword: answers.authMethod === 'password',
+        autoCommands: autoCommands,
         description: answers.description,
         tags: answers.tags,
     };
@@ -132,21 +161,7 @@ export async function addCommand() {
 
         console.log();
         console.log(chalk.green('✅ Host added successfully!'));
-        console.log();
-        console.log(chalk.blue('📋 Host information:'));
-        console.log(`   ${chalk.cyan('Name:')} ${newHost.name}`);
-        console.log(`   ${chalk.cyan('Address:')} ${newHost.user}@${newHost.host}:${newHost.port}`);
-        if (newHost.keyPath) {
-            console.log(`   ${chalk.cyan('Key file:')} ${newHost.keyPath}`);
-        }
-        if (newHost.description) {
-            console.log(`   ${chalk.cyan('Description:')} ${newHost.description}`);
-        }
-        if (newHost.tags && newHost.tags.length > 0) {
-            console.log(`   ${chalk.cyan('Tags:')} ${newHost.tags.join(', ')}`);
-        }
-        console.log();
-        console.log(chalk.blue('💡 To connect:'), chalk.gray(`simple-ssh connect ${newHost.name}`));
+        displayHostInfo(newHost);
     } catch (error) {
         console.log(chalk.red('❌ Error adding host:'), error);
     }

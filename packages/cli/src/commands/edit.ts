@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { existsSync } from 'fs';
 import { loadConfig, addHost, getHost } from '../utils/config.js';
+import { displayHostInfo, createHostChoices } from '../utils/display.js';
 import type { SSHHost } from '../types/ssh.js';
 
 export async function editCommand(hostName?: string) {
@@ -22,10 +23,7 @@ export async function editCommand(hostName?: string) {
                 name: 'selectedHost',
                 message: 'Select host to edit:',
                 choices: [
-                    ...config.hosts.map(host => ({
-                        name: `${chalk.cyan(host.name)} - ${host.user}@${host.host}:${host.port}`,
-                        value: host.name,
-                    })),
+                    ...createHostChoices(config.hosts),
                     new inquirer.Separator(),
                     {
                         name: chalk.gray('Cancel'),
@@ -173,7 +171,29 @@ export async function editCommand(hostName?: string) {
                     .filter(tag => tag.length > 0);
             },
         },
+        {
+            type: 'confirm',
+            name: 'hasAutoCommands',
+            message: 'Do you want to modify auto-run commands?',
+            default: !!(targetHost.autoCommands && targetHost.autoCommands.length > 0),
+        },
+        {
+            type: 'editor',
+            name: 'autoCommandsInput',
+            message: 'Enter commands to run automatically (one per line):',
+            default: targetHost.autoCommands ? targetHost.autoCommands.join('\n') : '',
+            when: answers => answers.hasAutoCommands,
+        },
     ]);
+
+    // Process auto commands
+    let autoCommands: string[] | undefined = undefined;
+    if (answers.hasAutoCommands && answers.autoCommandsInput) {
+        autoCommands = answers.autoCommandsInput
+            .split('\n')
+            .map((cmd: string) => cmd.trim())
+            .filter((cmd: string) => cmd.length > 0);
+    }
 
     const updatedHost: SSHHost = {
         name: answers.name,
@@ -182,6 +202,7 @@ export async function editCommand(hostName?: string) {
         port: answers.port,
         keyPath: answers.authMethod === 'key' ? answers.keyPath : undefined,
         usePassword: answers.authMethod === 'password',
+        autoCommands: autoCommands,
         description: answers.description,
         tags: answers.tags,
     };
@@ -190,21 +211,7 @@ export async function editCommand(hostName?: string) {
         await addHost(updatedHost);
 
         console.log(chalk.green('✅ Host updated successfully!'));
-        console.log();
-        console.log(chalk.blue('📋 Updated host information:'));
-        console.log(`   ${chalk.cyan('Name:')} ${updatedHost.name}`);
-        console.log(`   ${chalk.cyan('Address:')} ${updatedHost.user}@${updatedHost.host}:${updatedHost.port}`);
-        if (updatedHost.keyPath) {
-            console.log(`   ${chalk.cyan('Key file:')} ${updatedHost.keyPath}`);
-        }
-        if (updatedHost.description) {
-            console.log(`   ${chalk.cyan('Description:')} ${updatedHost.description}`);
-        }
-        if (updatedHost.tags && updatedHost.tags.length > 0) {
-            console.log(`   ${chalk.cyan('Tags:')} ${updatedHost.tags.join(', ')}`);
-        }
-        console.log();
-        console.log(chalk.blue('💡 To connect:'), chalk.gray(`simple-ssh connect ${updatedHost.name}`));
+        displayHostInfo(updatedHost, 'Updated host information');
     } catch (error) {
         console.log(chalk.red('❌ Error updating host:'), error);
     }
