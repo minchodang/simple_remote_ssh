@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { loadConfig, removeHost, getHost } from '../utils/config.js';
+import { createHostChoices } from '../utils/display.js';
 
 export async function removeCommand(hostName?: string) {
     const config = await loadConfig();
@@ -20,10 +21,7 @@ export async function removeCommand(hostName?: string) {
                 name: 'selectedHost',
                 message: 'Select host to remove:',
                 choices: [
-                    ...config.hosts.map(host => ({
-                        name: `${chalk.cyan(host.name)} - ${host.user}@${host.host}:${host.port}`,
-                        value: host.name,
-                    })),
+                    ...createHostChoices(config.hosts),
                     new inquirer.Separator(),
                     {
                         name: chalk.gray('Cancel'),
@@ -66,13 +64,13 @@ export async function removeCommand(hostName?: string) {
         {
             type: 'confirm',
             name: 'confirmed',
-            message: '정말로 삭제하시겠습니까?',
+            message: 'Are you sure you want to delete this host?',
             default: false,
         },
     ]);
 
     if (!confirmed) {
-        console.log(chalk.blue('취소되었습니다.'));
+        console.log(chalk.blue('Cancelled.'));
         return;
     }
 
@@ -80,11 +78,11 @@ export async function removeCommand(hostName?: string) {
         const success = await removeHost(targetHostName);
 
         if (success) {
-            console.log(chalk.green(`✅ 호스트 '${targetHostName}'이 성공적으로 삭제되었습니다.`));
+            console.log(chalk.green(`✅ Host '${targetHostName}' has been successfully removed.`));
         } else {
-            console.log(chalk.red(`❌ 호스트 '${targetHostName}' 삭제에 실패했습니다.`));
+            console.log(chalk.red(`❌ Failed to remove host '${targetHostName}'.`));
         }
     } catch (error) {
-        console.log(chalk.red('❌ 호스트 삭제 중 오류가 발생했습니다:'), error);
+        console.log(chalk.red('❌ Error occurred while removing host:'), error);
     }
 }

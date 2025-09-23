@@ -19,8 +19,8 @@ describe('Config Management', () => {
         process.env.HOME = testConfigDir;
         process.env.USERPROFILE = testConfigDir; // For Windows compatibility
 
-        // 각 테스트마다 깨끗한 환경 보장
-        process.env.USER = 'testuser'; // 일관된 테스트 환경
+        // Ensure clean environment for each test
+        process.env.USER = 'testuser'; // Consistent test environment
     });
 
     afterEach(() => {
@@ -31,7 +31,7 @@ describe('Config Management', () => {
         process.env.HOME = originalConfigDir;
         process.env.USERPROFILE = originalConfigDir;
 
-        // USER 환경변수도 복원
+        // Restore USER environment variable
         if (originalConfigDir.includes('kangminsu')) {
             process.env.USER = 'kangminsu';
         }
@@ -43,7 +43,7 @@ describe('Config Management', () => {
 
             expect(config.hosts).toEqual([]);
             expect(config.defaultPort).toBe(22);
-            expect(typeof config.defaultUser).toBe('string'); // 사용자명은 환경에 따라 다름
+            expect(typeof config.defaultUser).toBe('string'); // Username varies by environment
         });
 
         it('should load existing config file', async () => {
@@ -111,7 +111,7 @@ describe('Config Management', () => {
             await addHost(host2);
 
             const config = await loadConfig();
-            // 같은 이름의 호스트는 하나만 있어야 함
+            // Only one host with the same name should exist
             const sameNameHosts = config.hosts.filter(h => h.name === 'same-name');
             expect(sameNameHosts).toHaveLength(1);
             expect(sameNameHosts[0]).toEqual(host2);
@@ -133,7 +133,7 @@ describe('Config Management', () => {
             expect(removed).toBe(true);
 
             const config = await loadConfig();
-            // 해당 이름의 호스트가 없어야 함
+            // Host with that name should not exist
             const removedHost = config.hosts.find(h => h.name === 'to-remove');
             expect(removedHost).toBeUndefined();
         });

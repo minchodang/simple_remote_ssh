@@ -4,7 +4,7 @@ import { join } from 'path';
 import { homedir } from 'os';
 import type { SSHConfig, SSHHost } from '../types/ssh.js';
 
-// 테스트 환경에서 HOME 환경변수를 우선 사용
+// Use HOME environment variable first for test environments
 function getHomeDir(): string {
     return process.env.HOME || process.env.USERPROFILE || homedir();
 }
@@ -43,14 +43,14 @@ export async function loadConfig(): Promise<SSHConfig> {
         const content = await readFile(configFile, 'utf-8');
         const config = JSON.parse(content) as SSHConfig;
 
-        // 기본값 병합
+        // Merge default values
         return {
             ...DEFAULT_CONFIG,
             ...config,
             hosts: config.hosts || [],
         };
     } catch (error) {
-        console.error('설정 파일을 읽는 중 오류가 발생했습니다:', error);
+        console.error('Error reading configuration file:', error);
         return DEFAULT_CONFIG;
     }
 }
@@ -61,7 +61,7 @@ export async function saveConfig(config: SSHConfig): Promise<void> {
     try {
         await writeFile(getConfigFile(), JSON.stringify(config, null, 2), 'utf-8');
     } catch (error) {
-        console.error('설정 파일을 저장하는 중 오류가 발생했습니다:', error);
+        console.error('Error saving configuration file:', error);
         throw error;
     }
 }
@@ -69,7 +69,7 @@ export async function saveConfig(config: SSHConfig): Promise<void> {
 export async function addHost(host: SSHHost): Promise<void> {
     const config = await loadConfig();
 
-    // 중복 이름 체크
+    // Check for duplicate names
     const existingIndex = config.hosts.findIndex(h => h.name === host.name);
     if (existingIndex >= 0) {
         config.hosts[existingIndex] = host;

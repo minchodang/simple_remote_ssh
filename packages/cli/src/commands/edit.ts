@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { existsSync } from 'fs';
 import { loadConfig, addHost, getHost } from '../utils/config.js';
+import { displayHostInfo, createHostChoices } from '../utils/display.js';
 import type { SSHHost } from '../types/ssh.js';
 
 export async function editCommand(hostName?: string) {
@@ -22,10 +23,7 @@ export async function editCommand(hostName?: string) {
                 name: 'selectedHost',
                 message: 'Select host to edit:',
                 choices: [
-                    ...config.hosts.map(host => ({
-                        name: `${chalk.cyan(host.name)} - ${host.user}@${host.host}:${host.port}`,
-                        value: host.name,
-                    })),
+                    ...createHostChoices(config.hosts),
                     new inquirer.Separator(),
                     {
                         name: chalk.gray('Cancel'),
@@ -176,19 +174,19 @@ export async function editCommand(hostName?: string) {
         {
             type: 'confirm',
             name: 'hasAutoCommands',
-            message: '자동 실행 명령어를 수정하시겠습니까?',
+            message: 'Do you want to modify auto-run commands?',
             default: !!(targetHost.autoCommands && targetHost.autoCommands.length > 0),
         },
         {
             type: 'editor',
             name: 'autoCommandsInput',
-            message: '자동 실행할 명령어들을 입력하세요 (한 줄에 하나씩):',
+            message: 'Enter commands to run automatically (one per line):',
             default: targetHost.autoCommands ? targetHost.autoCommands.join('\n') : '',
             when: answers => answers.hasAutoCommands,
         },
     ]);
 
-    // 자동 명령어 처리
+    // Process auto commands
     let autoCommands: string[] | undefined = undefined;
     if (answers.hasAutoCommands && answers.autoCommandsInput) {
         autoCommands = answers.autoCommandsInput
@@ -213,27 +211,7 @@ export async function editCommand(hostName?: string) {
         await addHost(updatedHost);
 
         console.log(chalk.green('✅ Host updated successfully!'));
-        console.log();
-        console.log(chalk.blue('📋 Updated host information:'));
-        console.log(`   ${chalk.cyan('Name:')} ${updatedHost.name}`);
-        console.log(`   ${chalk.cyan('Address:')} ${updatedHost.user}@${updatedHost.host}:${updatedHost.port}`);
-        if (updatedHost.keyPath) {
-            console.log(`   ${chalk.cyan('Key file:')} ${updatedHost.keyPath}`);
-        }
-        if (updatedHost.description) {
-            console.log(`   ${chalk.cyan('Description:')} ${updatedHost.description}`);
-        }
-        if (updatedHost.tags && updatedHost.tags.length > 0) {
-            console.log(`   ${chalk.cyan('Tags:')} ${updatedHost.tags.join(', ')}`);
-        }
-        if (updatedHost.autoCommands && updatedHost.autoCommands.length > 0) {
-            console.log(`   ${chalk.cyan('자동 명령어:')} ${updatedHost.autoCommands.length}개`);
-            updatedHost.autoCommands.forEach((cmd, index) => {
-                console.log(`     ${chalk.dim(`${index + 1}.`)} ${chalk.yellow(cmd)}`);
-            });
-        }
-        console.log();
-        console.log(chalk.blue('💡 To connect:'), chalk.gray(`simple-ssh connect ${updatedHost.name}`));
+        displayHostInfo(updatedHost, 'Updated host information');
     } catch (error) {
         console.log(chalk.red('❌ Error updating host:'), error);
     }

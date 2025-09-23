@@ -4,8 +4,8 @@ export interface SSHHost {
     user: string;
     port: number;
     keyPath?: string;
-    usePassword?: boolean; // 비밀번호 사용 여부 (연결 시 입력받음)
-    autoCommands?: string[]; // 접속 후 자동 실행할 명령어들
+    usePassword?: boolean; // Whether to use password (prompted on connection)
+    autoCommands?: string[]; // Commands to run automatically after connection
     description?: string;
     tags?: string[];
 }

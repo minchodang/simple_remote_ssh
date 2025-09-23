@@ -28,9 +28,9 @@ export async function listCommand() {
         } else {
             console.log(`   ${chalk.dim('🔧 Auth:')} ${chalk.gray('Default SSH settings')}`);
         }
-    if (host.autoCommands && host.autoCommands.length > 0) {
-      console.log(`   ${chalk.dim('🤖 자동 명령어:')} ${chalk.magenta(`${host.autoCommands.length}개`)}`);
-    }
+        if (host.autoCommands && host.autoCommands.length > 0) {
+            console.log(`   ${chalk.dim('🤖 Auto commands:')} ${chalk.magenta(`${host.autoCommands.length} command(s)`)}`);
+        }
     });
 
     console.log();
