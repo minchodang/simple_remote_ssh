@@ -53,9 +53,28 @@ export async function connectCommand(hostName?: string, options: ConnectionOptio
     console.log(chalk.gray(`   ${user}@${targetHost.host}:${port}`));
 
     const spinner = ora('Attempting SSH connection...').start();
+     const sshArgs = ['-p', port.toString()];
+     // SSH 명령어 구성
 
     // Build SSH command
     const sshArgs = ['-p', port.toString(), `${user}@${targetHost.host}`];
+     // 자동 명령어가 있는지 확인
+     const hasAutoCommands = targetHost.autoCommands && targetHost.autoCommands.length > 0;
+     
+     if (hasAutoCommands) {
+         console.log(chalk.blue(`🤖 자동 명령어 ${targetHost.autoCommands!.length}개가 설정되어 있습니다:`));
+         targetHost.autoCommands!.forEach((cmd, index) => {
+             console.log(`   ${chalk.dim(`${index + 1}.`)} ${chalk.yellow(cmd)}`);
+         });
+         console.log();
+         
+         // 자동 명령어들을 세미콜론으로 연결하고 마지막에 bash 추가 (대화형 세션 유지)
+         const commandString = targetHost.autoCommands!.join('; ') + '; bash';
+         sshArgs.push(`${user}@${targetHost.host}`, commandString);
+     } else {
+         // 일반 대화형 연결
+         sshArgs.push(`${user}@${targetHost.host}`);
+     }
 
     // Add key file if specified
     if (targetHost.keyPath) {
