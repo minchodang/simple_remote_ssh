@@ -54,10 +54,16 @@ export async function connectCommand(hostName?: string, options: ConnectionOptio
     console.log(chalk.blue(`🔗 Connecting to ${targetHost.name}...`));
     console.log(chalk.gray(`   ${user}@${targetHost.host}:${port}`));
 
+    // SSH 명령어 구성
+    const sshArgs = ['-p', port.toString()];
     const spinner = ora('Attempting SSH connection...').start();
      const sshArgs = ['-p', port.toString()];
      // SSH 명령어 구성
 
+    // 키 파일이 있으면 추가
+    if (targetHost.keyPath) {
+        sshArgs.unshift('-i', targetHost.keyPath);
+    }
     // Build SSH command
     const sshArgs = ['-p', port.toString(), `${user}@${targetHost.host}`];
      // 자동 명령어가 있는지 확인
@@ -78,11 +84,35 @@ export async function connectCommand(hostName?: string, options: ConnectionOptio
          sshArgs.push(`${user}@${targetHost.host}`);
      }
 
+    // 자동 명령어가 있는지 확인
+    const hasAutoCommands = targetHost.autoCommands && targetHost.autoCommands.length > 0;
     // Add key file if specified
     if (targetHost.keyPath) {
         sshArgs.unshift('-i', targetHost.keyPath);
     }
 
+    if (hasAutoCommands) {
+        console.log(chalk.blue(`🤖 자동 명령어 ${targetHost.autoCommands!.length}개가 설정되어 있습니다:`));
+        targetHost.autoCommands!.forEach((cmd, index) => {
+            console.log(`   ${chalk.dim(`${index + 1}.`)} ${chalk.yellow(cmd)}`);
+        });
+        console.log();
+
+        // 자동 명령어만 실행 (대화형 세션은 별도로)
+        const commandString = targetHost.autoCommands!.join(' && ');
+        sshArgs.push(`${user}@${targetHost.host}`, commandString);
+    } else {
+        // 일반 대화형 연결
+        sshArgs.push(`${user}@${targetHost.host}`);
+    }
+
+    // 비밀번호 사용 시 대화형 모드 강제
+    if (targetHost.usePassword) {
+        console.log(chalk.yellow('💡 비밀번호를 사용하는 호스트입니다. 연결 후 비밀번호를 입력해주세요.'));
+    }
+
+    console.log(chalk.green(`✅ SSH 연결을 시작합니다...`));
+    console.log(chalk.gray(`실행 명령어: ssh ${sshArgs.join(' ')}`));
     // Show password prompt info
     if (targetHost.usePassword) {
         console.log(chalk.yellow('💡 This host uses password authentication. Please enter password when prompted.'));
